@@ -1,0 +1,10 @@
+^C:\USERS\SSJED\ONEDRIVE\DOCUMENTS\GITHUB\CHRON-S-GAME-PROTOTYPE-AND-ALPHA-DEVELOPMENT\STANDALONE\BUILD\CMAKEFILES\2CED1970702CB4BED190E17B2D827FC3\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/ssjed/OneDrive/Documents/GitHub/Chron-s-Game-Prototype-and-Alpha-Development/Standalone -BC:/Users/ssjed/OneDrive/Documents/GitHub/Chron-s-Game-Prototype-and-Alpha-Development/Standalone/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/ssjed/OneDrive/Documents/GitHub/Chron-s-Game-Prototype-and-Alpha-Development/Standalone/build/BioStandalone.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

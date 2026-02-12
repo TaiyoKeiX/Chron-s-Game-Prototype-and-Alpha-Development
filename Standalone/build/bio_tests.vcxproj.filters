@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioUnitBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioGridManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioGameMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\third_party\imgui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\third_party\imgui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\third_party\imgui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\third_party\imgui\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\third_party\imgui\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\third_party\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\third_party\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioUnitBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioGridManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioGameMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{EF971CD2-32B9-3DEE-AFDD-3EB85A96FCD6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8DB9F9A1-149F-3AE6-8CD9-7D4834825527}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

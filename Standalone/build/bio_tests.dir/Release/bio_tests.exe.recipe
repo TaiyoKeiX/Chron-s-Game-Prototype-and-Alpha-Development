@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\build\x64\Release\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\build\Release\bio_tests.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>
