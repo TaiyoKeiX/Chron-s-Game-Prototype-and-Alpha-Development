@@ -36,6 +36,8 @@ namespace
         BioGridManager Grid;
         std::vector<FUnitInstance> Units;
         std::vector<FIntPoint> Obstacles;
+        std::vector<FIntPoint> HealingPods;
+        std::vector<FIntPoint> HazardTiles;
         int SelectedUnitIndex = -1;
         int NextUnitId = 1;
         ETurnPhase LastPhase = ETurnPhase::PlayerInput;
@@ -89,6 +91,35 @@ namespace
         return false;
     }
 
+    bool IsHealingPodAt(const FGameState& State, FIntPoint Cell)
+    {
+        for (const FIntPoint& Pod : State.HealingPods)
+        {
+            if (Pod.X == Cell.X && Pod.Y == Cell.Y)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool IsHazardAt(const FGameState& State, FIntPoint Cell)
+    {
+        for (const FIntPoint& Hazard : State.HazardTiles)
+        {
+            if (Hazard.X == Cell.X && Hazard.Y == Cell.Y)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool IsEnvironmentAt(const FGameState& State, FIntPoint Cell)
+    {
+        return IsHealingPodAt(State, Cell) || IsHazardAt(State, Cell);
+    }
+
     FIntPoint FindFirstEmptyCell(const FGameState& State)
     {
         for (int32_t Y = 0; Y < State.Grid.GridSize.Y; ++Y)
@@ -96,7 +127,7 @@ namespace
             for (int32_t X = 0; X < State.Grid.GridSize.X; ++X)
             {
                 const FIntPoint Cell(X, Y);
-                if (FindUnitAt(State, Cell) < 0 && !IsObstacleAt(State, Cell))
+                if (FindUnitAt(State, Cell) < 0 && !IsObstacleAt(State, Cell) && !IsEnvironmentAt(State, Cell))
                 {
                     return Cell;
                 }
@@ -115,7 +146,29 @@ namespace
             for (int32_t X = MinX; X <= MaxX; ++X)
             {
                 const FIntPoint Cell(X, Y);
-                if (FindUnitAt(State, Cell) < 0 && !IsObstacleAt(State, Cell))
+                if (FindUnitAt(State, Cell) < 0 && !IsObstacleAt(State, Cell) && !IsEnvironmentAt(State, Cell))
+                {
+                    return Cell;
+                }
+            }
+        }
+
+        return FIntPoint(-1, -1);
+    }
+
+    FIntPoint FindEmptyCellInRect(const FGameState& State, int32_t MinX, int32_t MaxX, int32_t MinY, int32_t MaxY)
+    {
+        MinX = std::max(0, MinX);
+        MinY = std::max(0, MinY);
+        MaxX = std::min(State.Grid.GridSize.X - 1, MaxX);
+        MaxY = std::min(State.Grid.GridSize.Y - 1, MaxY);
+
+        for (int32_t Y = MinY; Y <= MaxY; ++Y)
+        {
+            for (int32_t X = MinX; X <= MaxX; ++X)
+            {
+                const FIntPoint Cell(X, Y);
+                if (FindUnitAt(State, Cell) < 0 && !IsObstacleAt(State, Cell) && !IsEnvironmentAt(State, Cell))
                 {
                     return Cell;
                 }
@@ -143,6 +196,9 @@ namespace
         return std::max(1, Range);
     }
 
+    void ResolveEncounters(FGameState& State);
+    void ApplyEnvironmentEffects(FGameState& State);
+
     void ResetMovementForTeam(FGameState& State, int TeamId)
     {
         for (FUnitInstance& UnitInstance : State.Units)
@@ -166,9 +222,11 @@ namespace
         {
             ResetMovementForTeam(State, 2);
         }
+        else if (State.Mode.CurrentPhase == ETurnPhase::Environment)
+        {
+            ApplyEnvironmentEffects(State);
+        }
     }
-
-    void ResolveEncounters(FGameState& State);
 
     void AddUnit(FGameState& State, FIntPoint Cell, int TeamId)
     {
@@ -213,7 +271,45 @@ namespace
         {
             return;
         }
+        if (IsEnvironmentAt(State, Cell))
+        {
+            return;
+        }
         State.Obstacles.push_back(Cell);
+    }
+
+    void AddHealingPod(FGameState& State, FIntPoint Cell)
+    {
+        if (Cell.X < 0 || Cell.Y < 0)
+        {
+            return;
+        }
+        if (FindUnitAt(State, Cell) >= 0)
+        {
+            return;
+        }
+        if (IsObstacleAt(State, Cell) || IsEnvironmentAt(State, Cell))
+        {
+            return;
+        }
+        State.HealingPods.push_back(Cell);
+    }
+
+    void AddHazard(FGameState& State, FIntPoint Cell)
+    {
+        if (Cell.X < 0 || Cell.Y < 0)
+        {
+            return;
+        }
+        if (FindUnitAt(State, Cell) >= 0)
+        {
+            return;
+        }
+        if (IsObstacleAt(State, Cell) || IsEnvironmentAt(State, Cell))
+        {
+            return;
+        }
+        State.HazardTiles.push_back(Cell);
     }
 
     void GenerateRandomObstacles(FGameState& State, int32_t Count)
@@ -233,6 +329,52 @@ namespace
             const FIntPoint Cell(DistX(State.Rng), DistY(State.Rng));
             AddObstacle(State, Cell);
             ++Attempts;
+        }
+    }
+
+    void GenerateRandomEnvironment(FGameState& State, int32_t HealCount, int32_t HazardCount)
+    {
+        State.HealingPods.clear();
+        State.HazardTiles.clear();
+
+        std::uniform_int_distribution<int32_t> DistX(0, State.Grid.GridSize.X - 1);
+        std::uniform_int_distribution<int32_t> DistY(0, State.Grid.GridSize.Y - 1);
+
+        auto PlaceTiles = [&](int32_t Count, bool IsHeal)
+        {
+            int32_t Attempts = 0;
+            const int32_t MaxAttempts = Count * 25;
+            while (Attempts < MaxAttempts)
+            {
+                if (IsHeal && static_cast<int32_t>(State.HealingPods.size()) >= Count)
+                {
+                    break;
+                }
+                if (!IsHeal && static_cast<int32_t>(State.HazardTiles.size()) >= Count)
+                {
+                    break;
+                }
+
+                const FIntPoint Cell(DistX(State.Rng), DistY(State.Rng));
+                if (IsHeal)
+                {
+                    AddHealingPod(State, Cell);
+                }
+                else
+                {
+                    AddHazard(State, Cell);
+                }
+                ++Attempts;
+            }
+        };
+
+        if (HealCount > 0)
+        {
+            PlaceTiles(HealCount, true);
+        }
+        if (HazardCount > 0)
+        {
+            PlaceTiles(HazardCount, false);
         }
     }
 
@@ -476,6 +618,60 @@ namespace
         RemoveDeadUnits(State);
     }
 
+    bool IsAdjacentToAny(const FGameState& State, FIntPoint Position, const std::vector<FIntPoint>& Tiles)
+    {
+        const FIntPoint Directions[4] = { FIntPoint(1, 0), FIntPoint(-1, 0), FIntPoint(0, 1), FIntPoint(0, -1) };
+        for (const FIntPoint& Dir : Directions)
+        {
+            const FIntPoint Neighbor(Position.X + Dir.X, Position.Y + Dir.Y);
+            for (const FIntPoint& Tile : Tiles)
+            {
+                if (Tile.X == Neighbor.X && Tile.Y == Neighbor.Y)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    void ApplyEnvironmentEffects(FGameState& State)
+    {
+        if (State.Units.empty())
+        {
+            return;
+        }
+
+        for (FUnitInstance& UnitInstance : State.Units)
+        {
+            BioUnitBase& Unit = UnitInstance.Unit;
+            if (!Unit.IsAlive())
+            {
+                continue;
+            }
+
+            const FStatBlock Stats = Unit.GetEffectiveStats();
+            const float MaxHp = Stats.Get(EBioStat::HitPoints);
+
+            const bool AdjacentToHeal = (Unit.TeamID == 1) && IsAdjacentToAny(State, Unit.GridCoordinates, State.HealingPods);
+            const bool AdjacentToHazard = IsAdjacentToAny(State, Unit.GridCoordinates, State.HazardTiles);
+
+            if (AdjacentToHazard)
+            {
+                const float Damage = MaxHp * 0.10f;
+                ApplyDamage(Unit, Damage);
+            }
+
+            if (AdjacentToHeal)
+            {
+                const float Heal = MaxHp * 0.25f;
+                Unit.CurrentHitPoints = std::clamp(Unit.CurrentHitPoints + Heal, 0.0f, MaxHp);
+            }
+        }
+
+        RemoveDeadUnits(State);
+    }
+
     int CountAliveTeam(const FGameState& State, int TeamId)
     {
         int Count = 0;
@@ -494,6 +690,8 @@ namespace
         State.Grid.GridSize = FIntPoint(8, 8);
         State.Units.clear();
         State.Obstacles.clear();
+        State.HealingPods.clear();
+        State.HazardTiles.clear();
         State.SelectedUnitIndex = -1;
         State.NextUnitId = 1;
         State.LastPhase = State.Mode.CurrentPhase;
@@ -502,16 +700,29 @@ namespace
 
         const int32_t ObstacleCount = (State.Grid.GridSize.X * State.Grid.GridSize.Y) / 6;
         GenerateRandomObstacles(State, ObstacleCount);
+        const int32_t TotalCells = State.Grid.GridSize.X * State.Grid.GridSize.Y;
+        const int32_t HealCount = std::max(1, TotalCells / 24);
+        const int32_t HazardCount = std::max(2, TotalCells / 16);
+        GenerateRandomEnvironment(State, HealCount, HazardCount);
 
-        const int32_t MidX = State.Grid.GridSize.X / 2;
-        FIntPoint PlayerSpawnA = FindEmptyCellInRange(State, 0, MidX - 1);
+        const int32_t CornerSize = std::min(3, std::min(State.Grid.GridSize.X, State.Grid.GridSize.Y));
+        const int32_t PlayerMinX = 0;
+        const int32_t PlayerMaxX = CornerSize - 1;
+        const int32_t PlayerMinY = 0;
+        const int32_t PlayerMaxY = CornerSize - 1;
+        const int32_t EnemyMinX = State.Grid.GridSize.X - CornerSize;
+        const int32_t EnemyMaxX = State.Grid.GridSize.X - 1;
+        const int32_t EnemyMinY = State.Grid.GridSize.Y - CornerSize;
+        const int32_t EnemyMaxY = State.Grid.GridSize.Y - 1;
+
+        FIntPoint PlayerSpawnA = FindEmptyCellInRect(State, PlayerMinX, PlayerMaxX, PlayerMinY, PlayerMaxY);
         if (PlayerSpawnA.X < 0)
         {
             PlayerSpawnA = FindFirstEmptyCell(State);
         }
         AddUnit(State, PlayerSpawnA, 1);
 
-        FIntPoint PlayerSpawnB = FindEmptyCellInRange(State, 0, MidX - 1);
+        FIntPoint PlayerSpawnB = FindEmptyCellInRect(State, PlayerMinX, PlayerMaxX, PlayerMinY, PlayerMaxY);
         if (PlayerSpawnB.X < 0)
         {
             PlayerSpawnB = FindFirstEmptyCell(State);
@@ -520,7 +731,7 @@ namespace
 
         for (int EnemyIndex = 0; EnemyIndex < 4; ++EnemyIndex)
         {
-            FIntPoint EnemySpawn = FindEmptyCellInRange(State, MidX, State.Grid.GridSize.X - 1);
+            FIntPoint EnemySpawn = FindEmptyCellInRect(State, EnemyMinX, EnemyMaxX, EnemyMinY, EnemyMaxY);
             if (EnemySpawn.X < 0)
             {
                 EnemySpawn = FindFirstEmptyCell(State);
@@ -726,6 +937,15 @@ namespace
             GenerateRandomObstacles(State, ObstacleCount);
         }
 
+        ImGui::SameLine();
+        if (!GameOver && ImGui::Button("Randomize Environment"))
+        {
+            const int32_t TotalCells = State.Grid.GridSize.X * State.Grid.GridSize.Y;
+            const int32_t HealCount = std::max(1, TotalCells / 24);
+            const int32_t HazardCount = std::max(2, TotalCells / 16);
+            GenerateRandomEnvironment(State, HealCount, HazardCount);
+        }
+
         if (!GameOver && State.Mode.CurrentPhase == ETurnPhase::EnemyAI)
         {
             if (!State.EnemyAiExecuted)
@@ -758,6 +978,8 @@ namespace
                 const bool HasUnit = UnitIndex >= 0;
                 const bool IsSelected = (UnitIndex == State.SelectedUnitIndex);
                 const bool IsObstacle = IsObstacleAt(State, Cell);
+                const bool IsHealTile = IsHealingPodAt(State, Cell);
+                const bool IsHazardTile = IsHazardAt(State, Cell);
 
                 ImVec4 BaseColor = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
                 if (IsObstacle)
@@ -768,6 +990,14 @@ namespace
                 {
                     const int TeamId = State.Units[UnitIndex].Unit.TeamID;
                     BaseColor = (TeamId == 2) ? ImVec4(0.65f, 0.20f, 0.22f, 1.0f) : ImVec4(0.20f, 0.45f, 0.75f, 1.0f);
+                }
+                else if (IsHealTile)
+                {
+                    BaseColor = ImVec4(0.20f, 0.60f, 0.35f, 1.0f);
+                }
+                else if (IsHazardTile)
+                {
+                    BaseColor = ImVec4(0.65f, 0.35f, 0.15f, 1.0f);
                 }
                 if (IsSelected)
                 {
@@ -783,6 +1013,16 @@ namespace
                 if (IsObstacle)
                 {
                     Label[0] = '#';
+                    Label[1] = '\0';
+                }
+                else if (!HasUnit && IsHealTile)
+                {
+                    Label[0] = 'H';
+                    Label[1] = '\0';
+                }
+                else if (!HasUnit && IsHazardTile)
+                {
+                    Label[0] = 'X';
                     Label[1] = '\0';
                 }
                 else if (HasUnit && !State.Units[UnitIndex].Name.empty())
