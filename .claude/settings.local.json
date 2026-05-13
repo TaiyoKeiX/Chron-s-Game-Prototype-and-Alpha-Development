@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cmake --build . --config Release)",
+      "Bash(start \"c:/Users/ssjed/OneDrive/Documents/GitHub/Chron-s-Game-Prototype-and-Alpha-Development/Standalone/build/Release/bio_tests.exe\")",
+      "Bash(cmake --build \"c:/Users/ssjed/OneDrive/Documents/GitHub/Chron-s-Game-Prototype-and-Alpha-Development/Standalone/build\" --config Release)"
+    ]
+  }
+}

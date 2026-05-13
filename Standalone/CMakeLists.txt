@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 project(BioStandalone LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -6,6 +6,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(bio_tests
     main.cpp
+    GameState.h
+    GameState.cpp
+    BattleLogic.h
+    BattleLogic.cpp
+    LevelData.h
+    LevelData.cpp
+    ScreenMainMenu.h
+    ScreenMainMenu.cpp
+    ScreenLevelSelect.h
+    ScreenLevelSelect.cpp
+    ScreenCharacterUpgrade.h
+    ScreenCharacterUpgrade.cpp
+    ScreenBattle.h
+    ScreenBattle.cpp
+    ScreenBattleResult.h
+    ScreenBattleResult.cpp
     BioTypes.h
     BioTypes.cpp
     BioUnitBase.h
@@ -14,6 +30,8 @@ add_executable(bio_tests
     BioGridManager.cpp
     BioGameMode.h
     BioGameMode.cpp
+    SkillTree.h
+    SkillTree.cpp
     third_party/imgui/imgui.cpp
     third_party/imgui/imgui_demo.cpp
     third_party/imgui/imgui_draw.cpp

@@ -4,6 +4,30 @@
     <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BattleLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\LevelData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenMainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenLevelSelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenCharacterUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenBattle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenBattleResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -14,6 +38,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioGameMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\SkillTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\third_party\imgui\imgui.cpp">
@@ -39,6 +66,30 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BattleLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\LevelData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenMainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenLevelSelect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenCharacterUpgrade.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenBattle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\ScreenBattleResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,6 +100,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\BioGameMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ssjed\OneDrive\Documents\GitHub\Chron-s-Game-Prototype-and-Alpha-Development\Standalone\SkillTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
